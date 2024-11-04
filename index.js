@@ -1,17 +1,23 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDb = require("./config/database");
+const userRoutes = require("./routes/userRoutes");
 dotenv.config();
+
+let port = process.env.PORT || 5006;
 
 //Data base connection
 connectDb();
 
-let port = process.env.PORT || 5006;
+const app = express();
 
+//middlewares
 app.use(cors());
 app.use(express.json());
+
+//Routes
+app.use("/api/auth", userRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({
