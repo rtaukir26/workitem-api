@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
 const connectDb = require("./config/database");
 const userRoutes = require("./routes/userRoutes");
 dotenv.config();
@@ -14,6 +15,10 @@ const app = express();
 
 //middlewares
 app.use(cors());
+// Middleware to parse JSON data
+app.use(bodyParser.json());
+// Middleware to parse URL-encoded data
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Routes
