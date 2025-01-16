@@ -7,6 +7,7 @@ const { ErrorHandler } = require("../utils/helpers");
 exports.register = async (req, res) => {
   try {
     const { email, password, confirm_password } = req.body;
+    console.log("body", req.body);
 
     if (!email) {
       return ErrorHandler(res, 404, "email is required!");
@@ -32,15 +33,24 @@ exports.register = async (req, res) => {
     });
 
     const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: 5 * 60 * 1000,
+      // expiresIn: 5 * 60 * 1000,
+      expiresIn: "1h",
     });
+    // const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET_KEY);
 
     // const { password,confirm_password, ...rest } = user;//"password and confirm_password" will not show. for now getting error, dont use this"
-    res.status(201).json({
-      success: true,
-      message: "user registered successfully",
-      user: { email: user.email, token },
-    });
+    res
+      .status(201)
+      .cookie("token", token, {
+        httpOnly: true, //can access only backend not front end
+        // expires: new Date(Date.now() + 1 * 1000),
+        maxAge: 60 * 60 * 1000,
+      })
+      .json({
+        success: true,
+        message: "user registered successfully",
+        user: { email: user.email, token },
+      });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -65,7 +75,7 @@ exports.userLogIn = async (req, res) => {
       { _id: user._id, email: user.email },
       process.env.JWT_SECRET_KEY,
       {
-        expiresIn: 15 * 60 * 1000,
+        expiresIn: "1h",
       }
     );
 
@@ -74,7 +84,7 @@ exports.userLogIn = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true, //can access only backend not front end
         // expires: new Date(Date.now() + 60 * 1000),
-        maxAge: 15 * 1000, //15mins
+        maxAge: 60 * 60 * 1000, //15mins
         // secure: true, // Uncomment when using HTTPS
         // sameSite: 'strict', // Adjust as needed
       })
@@ -103,7 +113,7 @@ exports.getUserInfo = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "user info retrived successfully",
+      message: "user info retrieved successfully",
       user,
     });
   } catch (error) {

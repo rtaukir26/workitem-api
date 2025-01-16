@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const connectDb = require("./config/database");
 const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
 dotenv.config();
 
 let port = process.env.PORT || 5006;
@@ -23,6 +24,7 @@ app.use(express.json());
 
 //Routes
 app.use("/api/auth", userRoutes);
+app.use("/api/product", productRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({

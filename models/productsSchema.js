@@ -1,0 +1,25 @@
+const mongoose = require("mongoose");
+
+const productsSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    price: { type: String, required: true },
+    category: { type: String, required: true },
+    description: { type: String },
+    // photo: {
+    //   url: { type: String, required: true }, // URL of the uploaded photo
+    //   public_id: { type: String, required: true }, // Public ID from Cloudinary
+    // },
+    photos: [
+      {
+        public_id: { type: String, required: true },
+        url: { type: String, required: true },
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+const Products = mongoose.model("Products", productsSchema);
+
+module.exports = Products;
