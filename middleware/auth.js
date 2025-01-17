@@ -1,4 +1,3 @@
-
 const JWT = require("jsonwebtoken");
 const { ErrorHandler } = require("../utils/helpers");
 
