@@ -20,21 +20,22 @@ const CartSchema = new mongoose.Schema(
           default: 1,
           min: [1, "Quantity cannot be less than 1"],
         },
-        price: {
-          type: Number,
-          required: true,
-        },
-        category: { type: String, required: true },
-        description: { type: String },
-        photos: [
-          {
-            public_id: { type: String, required: true },
-            url: { type: String, required: true },
-          },
-        ],
+        totalAmount: { type: Number, default: 0 },
+        // price: {
+        //   type: Number,
+        //   required: true,
+        // },
+        // category: { type: String, required: true },
+        // description: { type: String },
+        // photos: [
+        //   {
+        //     public_id: { type: String, required: true },
+        //     url: { type: String, required: true },
+        //   },
+        // ],
       },
     ],
-    totalAmount: {
+    grossTotalAmount: {
       type: Number,
       required: true,
       default: 0,
