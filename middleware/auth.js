@@ -6,7 +6,7 @@ const isAuthorized = async (req, res, next) => {
     // Safely retrieve the token
     const token =
       req.cookies?.token || req.headers.authorization.replace("Bearer ", "");
-
+    // console.log("token", token);
     // Check if token exists
     if (!token) {
       return ErrorHandler(res, 401, "Access Denied! No token provided.");
@@ -14,6 +14,8 @@ const isAuthorized = async (req, res, next) => {
 
     // Verify the token
     const decode = JWT.verify(token, process.env.JWT_SECRET_KEY);
+    // console.log("token decode", decode);
+
     req.user = decode; // Attach decoded user info to the request object
     next(); // Proceed to the next middleware or route handler
   } catch (error) {

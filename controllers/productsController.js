@@ -3,7 +3,6 @@ const Products = require("../models/productsSchema");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
 const { ErrorHandler } = require("../utils/helpers");
-const colors = require("colors");
 
 // Cloudinary configuration
 cloudinary.config({

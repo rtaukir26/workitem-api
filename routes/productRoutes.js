@@ -6,6 +6,7 @@ const {
   updateProduct,
   deleteProduct,
 } = require("../controllers/productsController");
+
 const isAuthorized = require("../middleware/auth");
 
 const router = express.Router();

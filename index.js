@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const connectDb = require("./config/database");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
+const CartRoutes = require("./routes/CartRoutes");
 dotenv.config();
 
 let port = process.env.PORT || 5006;
@@ -25,6 +26,7 @@ app.use(express.json());
 //Routes
 app.use("/api/auth", userRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/cart", CartRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({
