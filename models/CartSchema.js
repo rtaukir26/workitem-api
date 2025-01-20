@@ -21,10 +21,10 @@ const CartSchema = new mongoose.Schema(
           min: [1, "Quantity cannot be less than 1"],
         },
         totalAmount: { type: Number, default: 0 },
-        // price: {
-        //   type: Number,
-        //   required: true,
-        // },
+        price: {
+          type: Number,
+          required: true,
+        },
         // category: { type: String, required: true },
         // description: { type: String },
         // photos: [

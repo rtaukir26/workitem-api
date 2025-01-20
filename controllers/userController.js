@@ -86,7 +86,7 @@ exports.userLogIn = async (req, res) => {
         // expires: new Date(Date.now() + 60 * 1000),
         maxAge: 60 * 60 * 1000, //15mins
         // secure: true, // Uncomment when using HTTPS
-        // sameSite: 'strict', // Adjust as needed
+        sameSite: "strict", // Adjust as needed
       })
       .json({
         success: true,
@@ -128,12 +128,19 @@ exports.getUserInfo = async (req, res) => {
 //user logout - GET
 exports.userLogout = async (req, res) => {
   try {
+    // .cookie("token", null, {
+    //   // httpOnly: true, //can access only backend not front end
+    //   expires: new Date(Date.now()),
+    //   // maxAge: new Date(Date.now()), //15mins
+    //   // secure: true, // Uncomment when using HTTPS
+    //   sameSite: "strict", // Adjust as needed
+    // })
     return res
       .status(200)
       .clearCookie("token", {
-        httpOnly: true, // Ensure it's only accessible by the web server
-        secure: process.env.NODE_ENV === "production" ? true : false, // Send only over HTTPS in production
-        sameSite: "strict", // Adjust as needed
+        httpOnly: true, // Ensure it's only accessible by the server
+        secure: process.env.NODE_ENV === "production", // Send only over HTTPS in production
+        sameSite: "strict", // Prevent CSRF
       })
       .json({
         success: true,

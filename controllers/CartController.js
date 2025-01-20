@@ -31,6 +31,7 @@ exports.addToCart = async (req, res) => {
         products: [
           {
             productId,
+            price: product.price,
             quantity,
             totalAmount: quantity * product.price,
           },
@@ -54,6 +55,7 @@ exports.addToCart = async (req, res) => {
         cart.products.push({
           productId,
           quantity,
+          price: product.price,
           totalAmount: quantity * product.price,
         });
         // Update total amount
@@ -141,48 +143,53 @@ exports.getCartItem = async (req, res) => {
 };
 
 //update quantity cart item - put req
-// exports.updateQtyCartItem = async (req, res) => {
-//   try {
-//     const { _id: userId } = req.user;
-//     const { productId, quantity } = req.body;
+exports.updateQtyCartItem = async (req, res) => {
+  try {
+    const { _id: userId } = req.user;
+    const { productId, quantity } = req.body;
 
-//     if (!productId || !quantity) {
-//       return ErrorHandler(res, 404, "product Id, quantity  required");
-//     }
-//     const cart = await Cart.findOne({ userId });
+    console.log("body", req.body, userId);
 
-//     if (!cart) {
-//       return ErrorHandler(res, 404, "cart not found");
-//     }
+    if (!productId || !quantity) {
+      return ErrorHandler(res, 404, "product Id, quantity  required");
+    }
+    const cart = await Cart.findOne({ userId }).populate("products.productId");
+    console.log("cart", cart);
 
-//     const productIndex = cart.products?.findIndex(
-//       (product) => product?.productId.toString() === productId
-//     );
+    if (!cart) {
+      return ErrorHandler(res, 404, "cart not found");
+    }
 
-//     if (productIndex > -1) {
-//       cart.products[productIndex].quantity = quantity;
-//       cart.totalAmount = cart.products.reduce((acc, item) => {
-//         return (acc = acc + item.price * item.quantity);
-//       }, 0);
-//     } else {
-//       return ErrorHandler(res, 404, "singleCart not found");
-//     }
+    const productIndex = cart.products?.findIndex(
+      (product) => product?.productId._id?.toString() === productId
+    );
 
-//     await cart.save();
+    if (productIndex > -1) {
+      cart.products[productIndex].quantity = quantity;
+      cart.products[productIndex].totalAmount =
+        quantity * cart.products[productIndex].price;
+      cart.grossTotalAmount = cart.products.reduce((acc, item) => {
+        return (acc = acc + item.totalAmount);
+      }, 0);
+    } else {
+      return ErrorHandler(res, 404, "singleCart not found");
+    }
 
-//     res.status(200).json({
-//       success: true,
-//       message: "cart quantity updated successfully",
-//       cart,
-//     });
-//   } catch (err) {
-//     console.log(colors.red("Error", err.message));
-//     res.status(500).json({
-//       success: false,
-//       message: err.message,
-//     });
-//   }
-// };
+    await cart.save();
+
+    res.status(200).json({
+      success: true,
+      message: "cart quantity updated successfully",
+      cart,
+    });
+  } catch (err) {
+    console.log(colors.red("Error", err.message));
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 
 //delete item from cart - delete req
 exports.deleteCartItem = async (req, res) => {
@@ -226,6 +233,34 @@ exports.deleteCartItem = async (req, res) => {
       success: true,
       message: "cart item deleted and retrieved remains data successfully",
       cart,
+    });
+  } catch (err) {
+    console.log(colors.red("Error", err.message));
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+//total no of added products in cart
+exports.getTotalNumberOfAddedCart = async (req, res) => {
+  try {
+    const { _id: userId } = req.user;
+
+    const cart = await Cart.findOne({ userId }).populate("products.productId");
+    // console.log("cart", cart);
+
+    if (!cart) {
+      return ErrorHandler(res, 404, "cart not found");
+    }
+    let totalProducts = cart.products.length;
+
+    res.status(200).json({
+      success: true,
+      message: "data retrieved successfully",
+      totalCarts: totalProducts,
+      // cart,
     });
   } catch (err) {
     console.log(colors.red("Error", err.message));
