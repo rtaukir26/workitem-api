@@ -5,6 +5,7 @@ const {
   getProductDetails,
   updateProduct,
   deleteProduct,
+  getAllProducts,
 } = require("../controllers/productsController");
 
 const isAuthorized = require("../middleware/auth");
@@ -22,6 +23,7 @@ const upload = multer({ storage });
 // Route to create a product
 // router.post("/create", isAuthorized, upload.single("photo"), createProduct);
 router.post("/create", isAuthorized, upload.array("photos", 10), createProduct);
+router.get("/all", isAuthorized, getAllProducts);
 router.get("/info/:id", isAuthorized, getProductDetails);
 router.delete("/delete/:id", isAuthorized, deleteProduct);
 router.put("/update/:id", isAuthorized, updateProduct);

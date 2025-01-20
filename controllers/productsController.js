@@ -69,6 +69,31 @@ exports.createProduct = async (req, res) => {
   }
 };
 
+//get all products
+exports.getAllProducts = async (req, res) => {
+  try {
+    let products = await Products.find();
+
+    if (!products) {
+      return ErrorHandler(res, 404, "products not found");
+    }
+    // console.log("products", products);
+
+    res.status(200).json({
+      success: true,
+      message: "data retrieved successfully",
+      totalProducts: products?.length,
+      data: products,
+    });
+  } catch (error) {
+    console.log(colors.red(error.message));
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 //get single product details - get req
 exports.getProductDetails = async (req, res) => {
   try {
