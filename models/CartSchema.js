@@ -14,6 +14,10 @@ const CartSchema = new mongoose.Schema(
           ref: "products", // Reference to the Product model
           required: true,
         },
+        price: {
+          type: Number,
+          required: true,
+        },
         quantity: {
           type: Number,
           required: true,
@@ -21,10 +25,6 @@ const CartSchema = new mongoose.Schema(
           min: [1, "Quantity cannot be less than 1"],
         },
         totalAmount: { type: Number, default: 0 },
-        price: {
-          type: Number,
-          required: true,
-        },
         // category: { type: String, required: true },
         // description: { type: String },
         // photos: [
@@ -55,5 +55,5 @@ const CartSchema = new mongoose.Schema(
   }
 );
 
-const Cart = mongoose.model("Carts", CartSchema);
+const Cart = mongoose.model("carts", CartSchema);
 module.exports = Cart;

@@ -12,6 +12,7 @@ const isAuthorized = require("../middleware/auth");
 
 const router = express.Router();
 
+//For user
 //Add to Cart
 router.post("/add-to-cart", isAuthorized, addToCart);
 
@@ -26,6 +27,8 @@ router.put("/update-qty", isAuthorized, updateQtyCartItem);
 
 //delete cart
 router.delete("/delete-cart/:productId", isAuthorized, deleteCartItem);
+
+//get total no of added qty
 router.get("/total-added-products", isAuthorized, getTotalNumberOfAddedCart);
 
 module.exports = router;

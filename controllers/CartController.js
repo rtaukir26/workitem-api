@@ -90,6 +90,7 @@ exports.getAllCart = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "carts retrieved successfully",
+      totalCart: cart.length,
       cart,
     });
   } catch (error) {
@@ -148,7 +149,7 @@ exports.updateQtyCartItem = async (req, res) => {
     const { _id: userId } = req.user;
     const { productId, quantity } = req.body;
 
-    console.log("body", req.body, userId);
+    // console.log("body", req.body, userId);
 
     if (!productId || !quantity) {
       return ErrorHandler(res, 404, "product Id, quantity  required");
