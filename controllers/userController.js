@@ -9,14 +9,11 @@ exports.register = async (req, res) => {
     const { email, password, confirm_password } = req.body;
     console.log("body", req.body);
 
+    //Note:- Write "return" to avoid server crushes
     if (!email) {
       return ErrorHandler(res, 404, "email is required!");
-      //   return res.status(404).json({
-      //     success: false,
-      //     message: "email is required",
-      //   });
     }
-    if (!password) return ErrorHandler(res, 404, "password is required!"); //Note:- Write "return" to avoid server crush
+    if (!password) return ErrorHandler(res, 404, "password is required!");
 
     if (!confirm_password)
       return ErrorHandler(res, 404, "confirm_password is required!");
@@ -34,7 +31,7 @@ exports.register = async (req, res) => {
 
     const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET_KEY, {
       // expiresIn: 5 * 60 * 1000,
-      expiresIn: "1h",
+      expiresIn: "8h",
     });
     // const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET_KEY);
 
@@ -44,7 +41,7 @@ exports.register = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true, //can access only backend not front end
         // expires: new Date(Date.now() + 1 * 1000),
-        maxAge: 60 * 60 * 1000,
+        maxAge: 8 * 60 * 60 * 1000,
       })
       .json({
         success: true,
@@ -75,7 +72,7 @@ exports.userLogIn = async (req, res) => {
       { _id: user._id, email: user.email },
       process.env.JWT_SECRET_KEY,
       {
-        expiresIn: "1h",
+        expiresIn: "8h",
       }
     );
 
@@ -84,7 +81,7 @@ exports.userLogIn = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true, //can access only backend not front end
         // expires: new Date(Date.now() + 60 * 1000),
-        maxAge: 60 * 60 * 1000, //15mins
+        maxAge: 8 * 60 * 60 * 1000, //15mins
         // secure: true, // Uncomment when using HTTPS
         sameSite: "strict", // Adjust as needed
       })

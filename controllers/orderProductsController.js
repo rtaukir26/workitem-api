@@ -19,6 +19,10 @@ exports.orderProducts = async (req, res) => {
       isDefault,
     } = req.body;
     // console.log("body", req.body);
+    console.log("body", req.body);
+    if (!fullName || !productId) {
+      return ErrorHandler(res, 404, "productId, fullName required");
+    }
     // const newOrder = await OrderProducts.findOne({ userId });
     const cart = await Cart.findOne({ userId }).populate("products.productId");
     // console.log("cart", cart);

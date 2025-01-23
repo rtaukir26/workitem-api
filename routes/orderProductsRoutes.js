@@ -7,8 +7,10 @@ const {
 
 const router = express.Router();
 
-//order products/submit
-router.post("/submit", isAuthorized, orderProducts);
+//order products/buy/submit
+router.post("/buy", isAuthorized, orderProducts);
+
+//get all ordered products
 router.get("/all", isAuthorized, getAllOrderedProducts);
 
 module.exports = router;
