@@ -9,7 +9,7 @@ const connectDb = async () => {
       // useNewUrlParser: true,
       // useCreateIndex: true,
       // useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 30000,
+      serverSelectionTimeoutMS: 100000,
     });
     console.log(`Connected to Mongodb Data base ${conn.connection.host}`);
   } catch (error) {
