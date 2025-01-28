@@ -6,4 +6,4 @@ const userSchema = new mongoose.Schema({
   confirm_password: { type: String, required: true, trim: true, select: false },
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("users", userSchema);
