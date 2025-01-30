@@ -16,6 +16,7 @@ cloudinary.config({
 exports.createProduct = async (req, res) => {
   try {
     const { name, price, category, description } = req.body;
+    // console.log('body',req.body)
 
     if (!req.files || !req.files.length)
       return ErrorHandler(res, 400, "No file provided");
@@ -37,7 +38,7 @@ exports.createProduct = async (req, res) => {
     const product = await Products.create({
       name,
       price,
-      category,
+      category: { name: category.name, subCategory: category.subCategory },
       description,
       photos: photoUrls,
       //   photo: {
@@ -231,6 +232,44 @@ exports.deleteProduct = async (req, res) => {
     });
   } catch (err) {
     console.log(colors.red("err deleteProduct:", err.message));
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+//get all category
+exports.getCategories = async (req, res) => {
+  try {
+    let products = await Products.find();
+    if (!products) {
+      return ErrorHandler(res, 404, "products not found");
+    }
+    // let categories = products.map((item) => item.category);
+    let categories = {};
+    products.forEach((item) => {
+      const categoryName = item.category.name;
+      const subCategory = item.category.subCategory;
+
+      if (!categories[categoryName]) {
+        categories[categoryName] = {
+          name: categoryName,
+          subCategory: [subCategory],
+        };
+      } else {
+        categories[categoryName].subCategory.push(subCategory);
+      }
+    });
+
+    // console.log("categories", categories);
+    res.status(200).json({
+      success: true,
+      message: "data retrieved successfully",
+      category: categories,
+    });
+  } catch (err) {
+    console.log(colors.red("err getCategories:", err.message));
     res.status(500).json({
       success: false,
       message: err.message,

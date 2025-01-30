@@ -6,6 +6,7 @@ const {
   updateProduct,
   deleteProduct,
   getAllProducts,
+  getCategories,
 } = require("../controllers/productsController");
 
 const isAuthorized = require("../middleware/auth");
@@ -32,4 +33,5 @@ router.put("/update/:id", isAuthorized, updateProduct);
 //For user
 router.get("/all", isAuthorized, getAllProducts);
 router.get("/info/:id", isAuthorized, getProductDetails);
+router.get("/category", isAuthorized, getCategories);
 module.exports = router;
