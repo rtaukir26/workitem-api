@@ -7,7 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const CartRoutes = require("./routes/CartRoutes");
 const orderProductsRoutes = require("./routes/orderProductsRoutes");
-
+const morgan = require("morgan");
 dotenv.config();
 
 let port = process.env.PORT || 5006;
@@ -16,7 +16,8 @@ let port = process.env.PORT || 5006;
 connectDb();
 
 const app = express();
-
+// app.use(morgan("dev"));
+app.use(morgan("combined")); // Or use "dev" for simpler logs
 //middlewares
 app.use(cors());
 // Middleware to parse JSON data
