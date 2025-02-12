@@ -79,7 +79,7 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-//get all cart items - get req
+//get all cart items - get req - Admin
 exports.getAllCart = async (req, res) => {
   try {
     let cart = await Cart.find().populate("products.productId");
@@ -98,6 +98,28 @@ exports.getAllCart = async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+//get all cart items - get req - user
+exports.getAllCartByUser = async (req, res) => {
+  try {
+    const { _id: userId } = req.user;
+    let cart = await Cart.findOne({ userId }).populate("products.productId");
+
+    if (!cart || cart.length === 0) {
+      return ErrorHandler(res, 404, "carts not found");
+    }
+    res.status(200).json({
+      success: true,
+      cart,
+      totalCarts: cart?.products.length,
+    });
+  } catch (err) {
+    console.log(colors.red("Error", err.message));
+    res.status(500).json({
+      success: false,
+      error: err.message,
     });
   }
 };
@@ -250,7 +272,6 @@ exports.getTotalNumberOfAddedCart = async (req, res) => {
     const { _id: userId } = req.user;
 
     const cart = await Cart.findOne({ userId }).populate("products.productId");
-    // console.log("cart", cart);
 
     if (!cart) {
       return ErrorHandler(res, 404, "cart not found");

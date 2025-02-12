@@ -242,19 +242,35 @@ exports.deleteProduct = async (req, res) => {
 //get all category
 exports.getCategories = async (req, res) => {
   try {
-    let products = await Products.find();
+    let products = await Products?.find({});
     if (!products) {
       return ErrorHandler(res, 404, "products not found");
     }
-    // let categories = products.map((item) => item.category);
-    let categories = {};
+    let categories = {
+      "Suspension and Steering": {
+        subCategory: [
+          "Tie Rods",
+          "Steering Racks and Column",
+          "Ball Joints",
+          "Shock Absorbers and Struts",
+        ],
+      },
+      "Tyres and Wheels": {
+        subCategory: [
+          "Tyres",
+          "Rims and Alloys",
+          "Wheel Bearings",
+          "Wheel Alignment Kits",
+        ],
+      },
+    };
     products.forEach((item) => {
       const categoryName = item.category.name;
       const subCategory = item.category.subCategory;
 
       if (!categories[categoryName]) {
         categories[categoryName] = {
-          name: categoryName,
+          // name: categoryName,
           subCategory: [subCategory],
         };
       } else {

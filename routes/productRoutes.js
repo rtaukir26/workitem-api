@@ -31,7 +31,11 @@ router.delete("/delete/:id", isAuthorized, deleteProduct);
 router.put("/update/:id", isAuthorized, updateProduct);
 
 //For user
-router.get("/all", isAuthorized, getAllProducts);
+//get all product
+router.get("/all", getAllProducts);
+//get category
+router.get("/category", getCategories);
+//get single product info
 router.get("/info/:id", isAuthorized, getProductDetails);
-router.get("/category", isAuthorized, getCategories);
+
 module.exports = router;

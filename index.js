@@ -17,7 +17,7 @@ connectDb();
 
 const app = express();
 // app.use(morgan("dev"));
-app.use(morgan("combined")); // Or use "dev" for simpler logs
+// app.use(morgan("combined")); // Or use "dev" for simpler logs
 //middlewares
 app.use(cors());
 // Middleware to parse JSON data
