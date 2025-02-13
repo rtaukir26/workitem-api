@@ -19,7 +19,14 @@ const app = express();
 // app.use(morgan("dev"));
 // app.use(morgan("combined")); // Or use "dev" for simpler logs
 //middlewares
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin: "*", // Allow all origins (for testing)
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // Middleware to parse JSON data
 app.use(bodyParser.json());
 // Middleware to parse URL-encoded data
