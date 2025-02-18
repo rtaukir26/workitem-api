@@ -21,6 +21,11 @@ exports.createProduct = async (req, res) => {
     if (!req.files || !req.files.length)
       return ErrorHandler(res, 400, "No file provided");
 
+    // Upload single file to Cloudinary
+    // const photoUpload = await cloudinary.uploader.upload(req.file.path, {
+    //   folder: "products",
+    // });
+
     // Upload multiple files to Cloudinary
     const photoUploads = req.files.map((file) =>
       cloudinary.uploader.upload(file.path, { folder: "products" })
